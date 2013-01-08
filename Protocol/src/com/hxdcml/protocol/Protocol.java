@@ -97,7 +97,7 @@ public abstract class Protocol {
      * to furthermore help process the data.
      *
      * @param input Given by the client as a Json String
-     * @return a Json String that displays the result
+     * @return a Json String that displays the result.
      */
     public static String process(String input) throws SQLException {
         ProtocolData pd = new Gson().fromJson(input, ProtocolData.class);
