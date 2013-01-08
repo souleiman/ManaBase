@@ -96,9 +96,8 @@ public abstract class Protocol {
      * Processes the String input and formats it from Json to ProtocolData instance,
      * to furthermore help process the data.
      *
-     * @param input test   e
-     * @return
-     * @throws SQLException
+     * @param input Given by the client as a Json String
+     * @return a Json String that displays the result
      */
     public static String process(String input) throws SQLException {
         ProtocolData pd = new Gson().fromJson(input, ProtocolData.class);
