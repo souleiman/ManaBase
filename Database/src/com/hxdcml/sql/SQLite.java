@@ -20,7 +20,6 @@ public class SQLite {
     public SQLite(int type) {
         try {
             Class.forName("org.sqlite.JDBC");
-
             String DATABASE_FILE = (type == Constant.TYPE_MAGIC ?
                     Constant.DATABASE_FILE_MAGIC : Constant.DATABASE_FILE_YUGIOH);
             connection = DriverManager.getConnection("jdbc:sqlite:" + DATABASE_FILE);
