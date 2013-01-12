@@ -28,7 +28,7 @@ public class ServerPool extends ServerSocket implements Observer {
      */
     public ServerPool(int port) throws IOException {
         super(port);
-        buffer = new Hashtable<String, PoolNode>(100);
+        buffer = new Hashtable<>(100);
     }
 
     /**

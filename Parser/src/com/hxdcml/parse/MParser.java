@@ -1,6 +1,11 @@
 package com.hxdcml.parse;
 
-import com.hxdcml.card.magic.*;
+import com.hxdcml.card.magic.Body;
+import com.hxdcml.card.magic.Card;
+import com.hxdcml.card.magic.CardFactory;
+import com.hxdcml.card.magic.Creature;
+import com.hxdcml.card.magic.DataMap;
+import com.hxdcml.card.magic.Planeswalker;
 import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.SQLite;
 import com.hxdcml.wrapper.MagicWrapper;
