@@ -16,7 +16,7 @@ import java.util.Observable;
 public class PoolNode extends Observable implements Runnable {
     private Thread thread;
     private Socket socket;
-    protected Streamer connection;
+    protected ConnectionStream connection;
     protected String hostname;
 
     public PoolNode(Socket socket) {
@@ -120,7 +120,7 @@ public class PoolNode extends Observable implements Runnable {
      * This inner class will inherit the Streamer interface. This class solely functions as
      * a two-way stream. Meaning that it can read and write.
      */
-    private class ConnectionStream implements Streamer {
+    private class ConnectionStream {
         private PrintWriter output;
         private BufferedReader input;
 
