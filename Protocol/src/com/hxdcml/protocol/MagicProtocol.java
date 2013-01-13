@@ -21,9 +21,7 @@ import java.util.AbstractMap;
 public class MagicProtocol extends Protocol {
     protected MagicProtocol() throws SQLException {
         procedure = new MagicWrapper(new SQLite(Constant.TYPE_MAGIC));
-        GsonBuilder builder = new GsonBuilder();
-        builder.disableHtmlEscaping();
-        gson = builder.create();
+        gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     /**
@@ -42,6 +40,8 @@ public class MagicProtocol extends Protocol {
         QueryNode node = map.get(Constant.NAME);
         if (node != null && node.isExact() && cards.length == 0) {
             cards = (Card[]) Parser.parse(node.getValue(), Constant.TYPE_MAGIC);
+            if (cards == null)
+                return null;
             for (Card card : cards)
                 procedure.insert(card);
         }
