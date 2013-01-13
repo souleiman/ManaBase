@@ -40,8 +40,10 @@ public class MagicProtocol extends Protocol {
         QueryNode node = map.get(Constant.NAME);
         if (node != null && node.isExact() && cards.length == 0) {
             cards = (Card[]) Parser.parse(node.getValue(), Constant.TYPE_MAGIC);
-            if (cards == null)
+            if (cards == null) {
+                System.out.println("Failed to find: " + node.getValue());
                 return null;
+            }
             for (Card card : cards)
                 procedure.insert(card);
         }
@@ -49,6 +51,19 @@ public class MagicProtocol extends Protocol {
         if (cards.length != 0)
             return gson.toJson(cards, Card[].class);
         return null;
+    }
+
+    /**
+     * Requests a random search
+     *
+     * @return a String that contains the random result.
+     */
+    @Override
+    protected String requestRandom() throws SQLException {
+        Card[] cards = (Card[]) Parser.parse(null, Constant.TYPE_MAGIC);
+        if (cards == null)
+            return null;
+        return gson.toJson(cards, Card[].class);
     }
 
     /**

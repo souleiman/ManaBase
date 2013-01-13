@@ -13,6 +13,7 @@ public class ProtocolData {
     public static final int UPDATE = 1;
     public static final int DELETE = 2;
     public static final int SIZE = 3;
+    public static final int RANODM = 4;
 
     private int type;
     private int command;
@@ -51,6 +52,9 @@ public class ProtocolData {
 
     public boolean isSearch() {
         return command == SEARCH;
+    }
+    public boolean isRandom() {
+        return type == RANODM;
     }
     public boolean isUpdate() {
         return command == UPDATE;

@@ -54,4 +54,14 @@ public class YugiohProtocol extends Protocol {
     protected String requestDelete(ProtocolMessage message) {
         return null;
     }
+
+    /**
+     * Requests a random search
+     *
+     * @return a String that contains the random result.
+     */
+    @Override
+    protected String requestRandom() throws SQLException {
+        return null;
+    }
 }

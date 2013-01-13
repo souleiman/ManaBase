@@ -413,7 +413,7 @@ public final class MParser {
      * @precondition Check if the page found a result, if not return null.
      */
     protected static Card[] parse(String name) {
-        ArrayList<Card> bodies = new ArrayList<Card>();
+        ArrayList<Card> bodies = new ArrayList<>();
         MParser parser = new MParser(name);
         Card card = parser.invoke(name != null ? 0 : 2);
         if (card == null)

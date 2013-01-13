@@ -40,6 +40,9 @@ public abstract class Protocol {
         } else if (data.isSize()) {
             System.out.println("SIZE");
             return requestSize();
+        } else if (data.isRandom()) {
+            System.out.println("RANDOM");
+            return requestRandom();
         } else {
             System.out.println("UNKNOWN!");
             return "[UNKNOWN COMMAND: " + data + "]";
@@ -47,8 +50,13 @@ public abstract class Protocol {
     }
 
     /**
+     * Requests a random search
+     * @return a String that contains the random result.
+     */
+    protected abstract String requestRandom() throws SQLException;
+
+    /**
      * Requests to search the Database based on the message
-     *
      *
      * @param message Contains details on what to search
      * @return a String that may contain the search result.
