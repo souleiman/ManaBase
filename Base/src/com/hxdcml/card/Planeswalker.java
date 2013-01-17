@@ -1,4 +1,4 @@
-package com.hxdcml.card.magic;
+package com.hxdcml.card;
 
 import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.SQLMap;

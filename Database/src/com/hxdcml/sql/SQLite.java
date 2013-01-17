@@ -17,12 +17,11 @@ public class SQLite {
     /**
      * Instantiates connection and statement to be used
      */
-    public SQLite(int type) {
+    public SQLite() {
         try {
             Class.forName("org.sqlite.JDBC");
-            String DATABASE_FILE = (type == Constant.TYPE_MAGIC ?
-                    Constant.DATABASE_FILE_MAGIC : Constant.DATABASE_FILE_YUGIOH);
-            connection = DriverManager.getConnection("jdbc:sqlite:" + DATABASE_FILE);
+            String filename = Constant.DATABASE_FILE_MAGIC;
+            connection = DriverManager.getConnection("jdbc:sqlite:" + filename);
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
             statement.executeUpdate("PRAGMA FOREIGN_KEYS=ON");

@@ -43,11 +43,23 @@ public abstract class Protocol {
         } else if (data.isRandom()) {
             System.out.println("RANDOM");
             return requestRandom();
+        } else if (data.isForced()) {
+            System.out.println("FORCED UPDATE");
+            return requestForcedUpdate(message);
         } else {
             System.out.println("UNKNOWN!");
             return "[UNKNOWN COMMAND: " + data + "]";
         }
     }
+
+
+    /**
+     * Forces an update in the Database, deletes the data from the database and requests an
+     * update.
+     *
+     * @return the updated result.
+     */
+    protected abstract String requestForcedUpdate(ProtocolMessage message) throws SQLException;
 
     /**
      * Requests a random search
@@ -109,12 +121,7 @@ public abstract class Protocol {
      */
     public static String process(String input) throws SQLException {
         ProtocolData pd = new Gson().fromJson(input, ProtocolData.class);
-        Protocol protocol;
-        if (pd.isMagic()) {
-            protocol = new MagicProtocol();
-        } else {
-            protocol = new YugiohProtocol();
-        }
+        Protocol protocol = new MagicProtocol();
         String process = protocol.process(pd, pd.getMessage());
         protocol.close();
         return process;

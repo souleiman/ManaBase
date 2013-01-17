@@ -1,9 +1,9 @@
 package com.hxdcml.protocol;
 
 import com.google.gson.GsonBuilder;
-import com.hxdcml.card.magic.Card;
+import com.hxdcml.card.Card;
 import com.hxdcml.lang.Constant;
-import com.hxdcml.parse.Parser;
+import com.hxdcml.parse.MParser;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.QueryNode;
 import com.hxdcml.sql.SQLite;
@@ -19,14 +19,14 @@ import java.util.AbstractMap;
  * Time: 7:28 PM
  */
 public class MagicProtocol extends Protocol {
+
     protected MagicProtocol() throws SQLException {
-        procedure = new MagicWrapper(new SQLite(Constant.TYPE_MAGIC));
+        procedure = new MagicWrapper(new SQLite());
         gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     /**
      * Requests to search the Database based on the message
-     *
      *
      * @param message Contains details on what to search
      * @return a String that may contain the search result.
@@ -35,21 +35,19 @@ public class MagicProtocol extends Protocol {
     protected String requestSearch(ProtocolMessage message) throws SQLException {
         AbstractMap query = (AbstractMap) message.getObject();
         QueryMap map = new QueryMap(query);
-        Card[] cards = (Card[]) procedure.query(map);
+        Card[] cards = procedure.query(map);
 
         QueryNode node = map.get(Constant.NAME);
-        if (node != null && node.isExact() && cards.length == 0) {
-            cards = (Card[]) Parser.parse(node.getValue(), Constant.TYPE_MAGIC);
+        if (node != null && cards.length == 0) {
+            cards = MParser.parse(node.getValue());
             if (cards == null) {
                 System.out.println("Failed to find: " + node.getValue());
                 return null;
             }
-            for (Card card : cards)
-                procedure.insert(card);
+            insert(cards);
         }
-
         if (cards.length != 0)
-            return gson.toJson(cards, Card[].class);
+            return GsonWrangler.arrayToJson(gson, cards);
         return null;
     }
 
@@ -59,16 +57,36 @@ public class MagicProtocol extends Protocol {
      * @return a String that contains the random result.
      */
     @Override
-    protected String requestRandom() throws SQLException {
-        Card[] cards = (Card[]) Parser.parse(null, Constant.TYPE_MAGIC);
+    protected String requestRandom() {
+        Card[] cards = MParser.parse(null);
         if (cards == null)
             return null;
-        return gson.toJson(cards, Card[].class);
+        try {
+            insert(cards);
+        } catch (SQLException ignored) {}
+        return GsonWrangler.arrayToJson(gson, cards);
+    }
+
+    /**
+     * Forces an update in the Database, deletes the data from the database and requests an
+     * update.
+     *
+     * @param message contains what to delete and what to update.
+     * @return the updated result.
+     */
+    @Override
+    protected String requestForcedUpdate(ProtocolMessage message) throws SQLException {
+        requestDelete(message); //We don't care if it's there or not.
+        String name = message.getName();
+        Card[] cards = MParser.parse(name);
+        if (cards == null)
+            return null;
+        insert(cards);
+        return GsonWrangler.arrayToJson(gson, cards);
     }
 
     /**
      * Requests an update on a specific detail based on the message given.
-     *
      *
      * @param message contains detail on what to search
      * @return a boolean true if successfully updated, otherwise false. In a String for Json.
@@ -84,7 +102,6 @@ public class MagicProtocol extends Protocol {
     /**
      * Requests a delete on a specific detail based on the message given.
      *
-     *
      * @param message contains detail on what to delete
      * @return a boolean true if successfully updated, otherwise false. In a String for Json.
      */
@@ -93,5 +110,14 @@ public class MagicProtocol extends Protocol {
         String name = message.getName();
         boolean delete = procedure.delete(name);
         return gson.toJson(delete);
+    }
+
+    /**
+     * Simply inserts the card in the database.
+     * @param cards that will be inserted into the database
+     */
+    private void insert(Card... cards) throws SQLException {
+        for (Card card : cards)
+            procedure.insert(card);
     }
 }

@@ -1,7 +1,17 @@
 package com.hxdcml.wrapper;
 
-import com.hxdcml.card.magic.*;
-import com.hxdcml.sql.*;
+import com.hxdcml.card.Card;
+import com.hxdcml.card.CardFactory;
+import com.hxdcml.card.Creature;
+import com.hxdcml.card.DataMap;
+import com.hxdcml.card.Planeswalker;
+import com.hxdcml.sql.QueryMap;
+import com.hxdcml.sql.QueryNode;
+import com.hxdcml.sql.SQLBinder;
+import com.hxdcml.sql.SQLEntities;
+import com.hxdcml.sql.SQLMap;
+import com.hxdcml.sql.SQLite;
+import com.hxdcml.sql.UpdateMap;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +19,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.hxdcml.lang.Constant.*;
+import static com.hxdcml.lang.Constant.ABILITY;
+import static com.hxdcml.lang.Constant.CLASSIC;
+import static com.hxdcml.lang.Constant.COMMANDER;
+import static com.hxdcml.lang.Constant.COST;
+import static com.hxdcml.lang.Constant.DATE;
+import static com.hxdcml.lang.Constant.EXTENDED;
+import static com.hxdcml.lang.Constant.FLAVOR;
+import static com.hxdcml.lang.Constant.ID;
+import static com.hxdcml.lang.Constant.IMAGE;
+import static com.hxdcml.lang.Constant.LEGACY;
+import static com.hxdcml.lang.Constant.LINK;
+import static com.hxdcml.lang.Constant.LOYALTY;
+import static com.hxdcml.lang.Constant.MANA;
+import static com.hxdcml.lang.Constant.MODERN;
+import static com.hxdcml.lang.Constant.NAME;
+import static com.hxdcml.lang.Constant.POWER;
+import static com.hxdcml.lang.Constant.RULING;
+import static com.hxdcml.lang.Constant.R_NAME;
+import static com.hxdcml.lang.Constant.STANDARD;
+import static com.hxdcml.lang.Constant.TOUGHNESS;
+import static com.hxdcml.lang.Constant.TYPE;
+import static com.hxdcml.lang.Constant.VINTAGE;
 
 /**
  * User: Souleiman Ayoub
@@ -222,7 +253,7 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
                     card = creature;
                 } else if (loyalty != null || card.isPlaneswalker()) {
                     Planeswalker walker = CardFactory.create(card, Planeswalker.class);
-                    walker.setLoyalty(loyalty);
+                    walker.setLoyalty(loyalty == null ? "" : loyalty);
                     card = walker;
                 }
                 DataMap format = card.getFormat();
@@ -278,7 +309,7 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
     }
 
     public static void main(String[] args) throws SQLException {
-        SQLProcedure procedure = new MagicWrapper(new SQLite(TYPE_MAGIC));
+        SQLProcedure procedure = new MagicWrapper(new SQLite());
         QueryMap map = new QueryMap();
         map.put(NAME, new QueryNode("Garruk", false));
         map.put(COMMANDER, new QueryNode("LEGAL", true));

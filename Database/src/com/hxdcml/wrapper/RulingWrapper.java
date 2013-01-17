@@ -102,7 +102,7 @@ public class RulingWrapper extends SQLWrapper {
     }
 
     public static void main(String[] args) throws SQLException {
-        SQLProcedure procedure = new MagicWrapper(new SQLite(TYPE_MAGIC));
+        SQLProcedure procedure = new MagicWrapper(new SQLite());
         boolean b = procedure.delete("Sleep");
         System.out.println(b);
         procedure.close();

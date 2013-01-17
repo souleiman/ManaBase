@@ -1,6 +1,6 @@
 package com.hxdcml.wrapper;
 
-import com.hxdcml.card.BasicCard;
+import com.hxdcml.card.Card;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.SQLEntities;
 import com.hxdcml.sql.UpdateMap;
@@ -45,7 +45,7 @@ public interface SQLProcedure {
      * @param map query entities that we will use to search in the database
      * @return a ResultSet
      */
-    public BasicCard[] query(QueryMap map) throws SQLException;
+    public Card[] query(QueryMap map) throws SQLException;
 
     /**
      * @return an integer value.

@@ -7,24 +7,21 @@ package com.hxdcml.protocol;
  */
 public class ProtocolData {
     public static final int MAGIC = 0;
-    public static final int YUGIOH = 1;
 
     public static final int SEARCH = 0;
     public static final int UPDATE = 1;
     public static final int DELETE = 2;
     public static final int SIZE = 3;
-    public static final int RANODM = 4;
+    public static final int RANDOM = 4;
+    public static final int FORCE = 5;
 
-    private int type;
     private int command;
     private ProtocolMessage message;
 
     /**
-     * @param type an integer value that holds the type of Card we want to deal with
      * @param command the type of command to deal with
      */
-    public ProtocolData(int type, int command) {
-        this.type = type;
+    public ProtocolData(int command) {
         this.command = command;
     }
 
@@ -43,18 +40,11 @@ public class ProtocolData {
         return message;
     }
 
-    public boolean isMagic() {
-        return type == MAGIC;
-    }
-    public boolean isYugioh() {
-        return type == YUGIOH;
-    }
-
     public boolean isSearch() {
         return command == SEARCH;
     }
     public boolean isRandom() {
-        return type == RANODM;
+        return command == RANDOM;
     }
     public boolean isUpdate() {
         return command == UPDATE;
@@ -65,13 +55,7 @@ public class ProtocolData {
     public boolean isSize() {
         return command == SIZE;
     }
-
-    @Override
-    public String toString() {
-        return "ProtocolData{" +
-                "type=" + type +
-                ", command=" + command +
-                ", message=" + message +
-                '}';
+    public boolean isForced() {
+        return command == FORCE;
     }
 }

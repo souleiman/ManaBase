@@ -1,4 +1,4 @@
-package com.hxdcml.card.magic;
+package com.hxdcml.card;
 
 /**
  * User: Souleiman Ayoub

@@ -1,4 +1,4 @@
-package com.hxdcml.card.magic;
+package com.hxdcml.card;
 
 import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.SQLMap;
@@ -53,7 +53,7 @@ public class Card implements Body {
      * @return <i>true</i> - if it's a creature; otherwise, <i>false</i>.
      */
     public boolean isCreature() {
-        return type.contains("Creature");
+        return type.contains("Creature") || type.contains("Summon");
     }
 
     /**

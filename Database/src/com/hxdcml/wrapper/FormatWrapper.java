@@ -101,7 +101,7 @@ public class FormatWrapper extends SQLWrapper {
     }
 
     public static void main(String[] args) throws SQLException {
-        MagicWrapper wrapper = new MagicWrapper(new SQLite(TYPE_MAGIC));
+        MagicWrapper wrapper = new MagicWrapper(new SQLite());
         UpdateMap map = new UpdateMap();
         map.put(Constant.ID, "1337");
         map.put(Constant.NAME, "Fuck Ya.");

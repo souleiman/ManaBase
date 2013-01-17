@@ -1,12 +1,11 @@
 package com.hxdcml.parse;
 
-import com.hxdcml.card.magic.Body;
-import com.hxdcml.card.magic.Card;
-import com.hxdcml.card.magic.CardFactory;
-import com.hxdcml.card.magic.Creature;
-import com.hxdcml.card.magic.DataMap;
-import com.hxdcml.card.magic.Planeswalker;
-import com.hxdcml.lang.Constant;
+import com.hxdcml.card.Body;
+import com.hxdcml.card.Card;
+import com.hxdcml.card.CardFactory;
+import com.hxdcml.card.Creature;
+import com.hxdcml.card.DataMap;
+import com.hxdcml.card.Planeswalker;
 import com.hxdcml.sql.SQLite;
 import com.hxdcml.wrapper.MagicWrapper;
 import com.hxdcml.wrapper.SQLProcedure;
@@ -268,7 +267,7 @@ public final class MParser {
         int cost = 0;
         if (detail.contains("Land") && !detail.contains("Creature")) {
             type = detail;
-        } else if (detail.contains("Creature")) {
+        } else if (detail.contains("Creature") || detail.contains("Summon")) {
             Creature creature = CardFactory.create(card, Creature.class);
             String[] split = detail.split(", ");
             type = parse(split[0], "(.*—.*)\\s.*/");
@@ -412,7 +411,7 @@ public final class MParser {
      * @return the card if it exist. Otherwise, return null.
      * @precondition Check if the page found a result, if not return null.
      */
-    protected static Card[] parse(String name) {
+    public static Card[] parse(String name) {
         ArrayList<Card> bodies = new ArrayList<>();
         MParser parser = new MParser(name);
         Card card = parser.invoke(name != null ? 0 : 2);
@@ -445,7 +444,7 @@ public final class MParser {
                 System.out.println("Failed...");
                 continue;
             }
-            SQLProcedure wrapper = new MagicWrapper(new SQLite(Constant.TYPE_MAGIC));
+            SQLProcedure wrapper = new MagicWrapper(new SQLite());
             Body card = body[0];
             wrapper.insert(card);
             if (card.hasLink()) {

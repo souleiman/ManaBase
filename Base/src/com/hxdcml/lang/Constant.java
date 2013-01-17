@@ -9,11 +9,8 @@ package com.hxdcml.lang;
  */
 public interface Constant {
     public static final int TYPE_MAGIC = 1;
-    public static final int TYPE_YUGIOH = 2;
-
 
     public static final String DATABASE_FILE_MAGIC = "manabase.db";
-    public static final String DATABASE_FILE_YUGIOH = "yugibase.db";
 
     /**
      * Column Entities for all SQLWrapper
