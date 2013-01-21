@@ -2,10 +2,7 @@ package com.hxdcml.protocol;
 
 import com.google.gson.GsonBuilder;
 import com.hxdcml.card.Card;
-import com.hxdcml.lang.Constant;
-import com.hxdcml.parse.MParser;
 import com.hxdcml.sql.QueryMap;
-import com.hxdcml.sql.QueryNode;
 import com.hxdcml.sql.SQLite;
 import com.hxdcml.sql.UpdateMap;
 import com.hxdcml.wrapper.MagicWrapper;
@@ -37,15 +34,6 @@ public class MagicProtocol extends Protocol {
         QueryMap map = new QueryMap(query);
         Card[] cards = procedure.query(map);
 
-        QueryNode node = map.get(Constant.NAME);
-        if (node != null && cards.length == 0) {
-            cards = MParser.parse(node.getValue());
-            if (cards == null) {
-                System.out.println("Failed to find: " + node.getValue());
-                return null;
-            }
-            insert(cards);
-        }
         if (cards.length != 0)
             return GsonWrangler.arrayToJson(gson, cards);
         return null;
@@ -58,13 +46,7 @@ public class MagicProtocol extends Protocol {
      */
     @Override
     protected String requestRandom() {
-        Card[] cards = MParser.parse(null);
-        if (cards == null)
-            return null;
-        try {
-            insert(cards);
-        } catch (SQLException ignored) {}
-        return GsonWrangler.arrayToJson(gson, cards);
+        return null;
     }
 
     /**
@@ -76,13 +58,7 @@ public class MagicProtocol extends Protocol {
      */
     @Override
     protected String requestForcedUpdate(ProtocolMessage message) throws SQLException {
-        requestDelete(message); //We don't care if it's there or not.
-        String name = message.getName();
-        Card[] cards = MParser.parse(name);
-        if (cards == null)
-            return null;
-        insert(cards);
-        return GsonWrangler.arrayToJson(gson, cards);
+        return null;
     }
 
     /**

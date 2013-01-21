@@ -19,7 +19,7 @@ public class CardFactory {
      * @param <K> The sub-class object we are to expect as a return
      * @return an object that is a child of the class that inherits Body
      */
-    public static <K> K  create(Body card, Class<K> c) {
+    public static <K> K  create(Card card, Class<K> c) {
         Object object = null;
         try {
             K k = c.newInstance();
@@ -41,18 +41,13 @@ public class CardFactory {
      * @param to the object that will retrieve the clones
      * @return the new cloned object
      */
-    private static Body clone(Body from, Body to) {
+    private static Card clone(Card from, Card to) {
         to.setId(from.getId());
         to.setName(from.getName());
         to.setType(from.getType());
         to.setAbility(from.getAbility());
-        to.setFlavor(from.getFlavor());
         to.setMana(from.getMana());
-        to.setCost(from.getCost());
-        to.setRuling(from.getRuling());
-        to.setFormat(from.getFormat());
         to.setLink(from.getLink());
-        to.setImage(from.getImage());
         return to;
     }
 }

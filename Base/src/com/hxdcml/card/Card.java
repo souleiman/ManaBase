@@ -1,6 +1,7 @@
 package com.hxdcml.card;
 
 import com.hxdcml.lang.Constant;
+import com.hxdcml.sql.SQLEntities;
 import com.hxdcml.sql.SQLMap;
 
 /**
@@ -8,23 +9,13 @@ import com.hxdcml.sql.SQLMap;
  * Date: 11/22/12
  * Time: 6:54 PM
  */
-public class Card implements Body {
-    protected String link;
+public class Card implements SQLEntities {
     protected int id;
-    protected String url;
+    protected String link;
     protected String name;
     protected String type;
     protected String ability;
-    protected String flavor;
     protected String mana;
-    protected int cost;
-    protected DataMap ruling;
-    protected DataMap format;
-
-    public Card() {
-        this.ruling = new DataMap();
-        this.format = new DataMap();
-    }
 
     /**
      * Check if the card is a permanent
@@ -136,16 +127,6 @@ public class Card implements Body {
     }
 
     /**
-     * Like lore(), some cards, may not even have a flavor text, this will check if it does.
-     *
-     * @return <i>true </i>- if it has flavor text; otherwise <i>false.</i>
-     */
-    public boolean hasFlavor() {
-        return flavor != null && !flavor.isEmpty();
-    }
-
-
-    /**
      * Get the Multiverse ID of the card.
      *
      * @return an <i>int</i> value.
@@ -218,24 +199,6 @@ public class Card implements Body {
     }
 
     /**
-     * Get Flavor Text.
-     *
-     * @return Flavor text in String
-     */
-    public String getFlavor() {
-        return flavor;
-    }
-
-    /**
-     * Set the flavor text of the card.
-     *
-     * @param flavor String which holds the Flavor text of the card.
-     */
-    public void setFlavor(String flavor) {
-        this.flavor = flavor;
-    }
-
-    /**
      * Get the cost of the card.
      *
      * @return mana cost in String
@@ -254,76 +217,9 @@ public class Card implements Body {
     }
 
     /**
-     * Get the converted cost
-     *
-     * @return Converted Mana Cost in String
-     */
-    public int getCost() {
-        return cost;
-    }
-
-    /**
-     * Set the converted mana cost
-     *
-     * @param cost String which holds the converted mana cost value.
-     */
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
-
-    /**
-     * Get the ruling list.
-     *
-     * @return list that contains the rules
-     */
-    @Override
-    public DataMap getRuling() {
-        return ruling;
-    }
-
-    /**
-     * Sets the ruling
-     *
-     * @param ruling sets the new ruling
-     */
-    public void setRuling(DataMap ruling) {
-        this.ruling = ruling;
-    }
-
-    /**
-     * Check to see if the card has rules.
-     *
-     * @return true if there is at least 1 rule; otherwise false.
-     */
-    public boolean hasRules() {
-        return ruling != null;
-    }
-
-    /**
-     * Get format of the card.
-     *
-     * @return <i>Format</i> which contains information about the legal process of the card,
-     *         based on a specific format.
-     */
-    @Override
-    public DataMap getFormat() {
-        return format;
-    }
-
-    /**
-     * Set the format
-     *
-     * @param format new format we want to set.
-     */
-    public void setFormat(DataMap format) {
-        this.format = format;
-    }
-
-    /**
      * @return get the linked card associated with the current Card. If there isn't a
      *         linked Card, return null.
      */
-    @Override
     public String getLink() {
         return link;
     }
@@ -340,27 +236,8 @@ public class Card implements Body {
     /**
      * @return true if there is a link, otherwise false.
      */
-    @Override
     public boolean hasLink() {
         return link != null;
-    }
-
-    /**
-     * Set the image url of the Image
-     *
-     * @param url the image url of the image
-     */
-    public void setImage(String url) {
-        this.url = url;
-    }
-
-    /**
-     * Get the url of the image
-     *
-     * @return the String of the url location
-     */
-    public String getImage() {
-        return url;
     }
 
     /**
@@ -373,15 +250,12 @@ public class Card implements Body {
     @Override
     public SQLMap getEntities() {
         SQLMap map = new SQLMap();
+        map.put(Constant.LINK, link);
         map.put(Constant.ID, id);
         map.put(Constant.NAME, name);
         map.put(Constant.TYPE, type);
         map.put(Constant.ABILITY, ability);
-        map.put(Constant.FLAVOR, flavor);
         map.put(Constant.MANA, mana);
-        map.put(Constant.COST, cost);
-        map.put(Constant.LINK, link);
-        map.put(Constant.IMAGE, url);
         map.put(Constant.POWER, null);
         map.put(Constant.TOUGHNESS, null);
         map.put(Constant.LOYALTY, null);
@@ -391,17 +265,12 @@ public class Card implements Body {
     @Override
     public String toString() {
         return "Card{" +
-                "link=" + link +
-                ", id=" + id +
-                ", url='" + url + '\'' +
+                "id=" + id +
+                ", link='" + link + '\'' +
                 ", name='" + name + '\'' +
                 ", type='" + type + '\'' +
                 ", ability='" + ability + '\'' +
-                ", flavor='" + flavor + '\'' +
                 ", mana='" + mana + '\'' +
-                ", cost=" + cost +
-                ", ruling=" + ruling +
-                ", format=" + format +
                 '}';
     }
 }

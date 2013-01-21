@@ -3,7 +3,6 @@ package com.hxdcml.wrapper;
 import com.hxdcml.card.Card;
 import com.hxdcml.card.CardFactory;
 import com.hxdcml.card.Creature;
-import com.hxdcml.card.DataMap;
 import com.hxdcml.card.Planeswalker;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.QueryNode;
@@ -17,30 +16,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.hxdcml.lang.Constant.ABILITY;
-import static com.hxdcml.lang.Constant.CLASSIC;
-import static com.hxdcml.lang.Constant.COMMANDER;
-import static com.hxdcml.lang.Constant.COST;
-import static com.hxdcml.lang.Constant.DATE;
-import static com.hxdcml.lang.Constant.EXTENDED;
-import static com.hxdcml.lang.Constant.FLAVOR;
 import static com.hxdcml.lang.Constant.ID;
-import static com.hxdcml.lang.Constant.IMAGE;
-import static com.hxdcml.lang.Constant.LEGACY;
 import static com.hxdcml.lang.Constant.LINK;
 import static com.hxdcml.lang.Constant.LOYALTY;
 import static com.hxdcml.lang.Constant.MANA;
-import static com.hxdcml.lang.Constant.MODERN;
 import static com.hxdcml.lang.Constant.NAME;
 import static com.hxdcml.lang.Constant.POWER;
-import static com.hxdcml.lang.Constant.RULING;
-import static com.hxdcml.lang.Constant.R_NAME;
-import static com.hxdcml.lang.Constant.STANDARD;
 import static com.hxdcml.lang.Constant.TOUGHNESS;
 import static com.hxdcml.lang.Constant.TYPE;
-import static com.hxdcml.lang.Constant.VINTAGE;
 
 /**
  * User: Souleiman Ayoub
@@ -49,18 +34,13 @@ import static com.hxdcml.lang.Constant.VINTAGE;
  */
 public class MagicWrapper extends SQLWrapper implements SQLProcedure {
     protected static SQLite lite;
-    private static SQLWrapper format = new FormatWrapper();
-    private static SQLWrapper ruling = new RulingWrapper();
 
-    private static String lastInsertedValue;
     //Table Name
     public static final String TABLE_NAME = "MAGIC";
 
     public MagicWrapper(SQLite lite) throws SQLException {
         MagicWrapper.lite = lite;
         createTable();
-        format.createTable();
-        ruling.createTable();
     }
 
     /**
@@ -75,14 +55,11 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
                         NAME + " STRING NOT NULL UNIQUE COLLATE NOCASE," + // NAME
                         TYPE + " STRING NOT NULL COLLATE NOCASE," + // Card Type
                         ABILITY + " STRING COLLATE NOCASE," + //Ability
-                        FLAVOR + " STRING COLLATE NOCASE," + //Flavor
                         MANA + " STRING COLLATE NOCASE," + //MANA
-                        COST + " STRING NOT NULL," + //COST
-                        LINK + " STRING," + //LINK
-                        IMAGE + " STRING," + //IMAGE
                         POWER + " STRING," + //POWER
                         TOUGHNESS + " STRING," + //TOUGHNESS
-                        LOYALTY + " STRING" + //LOYALTY
+                        LOYALTY + " STRING," + //LOYALTY
+                        LINK + " STRING COLLATE NOCASE" + //Link
                         ")"
         );
         statement.executeUpdate();
@@ -98,12 +75,11 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
     @Override
     protected synchronized PreparedStatement inject(SQLEntities entities) throws SQLException {
         String column =
-                String.format(" (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                        ID, NAME, TYPE, ABILITY, FLAVOR, MANA, COST, LINK, IMAGE,
-                        POWER, TOUGHNESS, LOYALTY);
+                String.format(" (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+                        ID, NAME, TYPE, ABILITY, MANA, POWER, TOUGHNESS, LOYALTY, LINK);
         return lite.getConnection().prepareStatement(
                 "INSERT INTO " + TABLE_NAME + column +
-                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                        " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
     }
 
@@ -123,29 +99,13 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
         statement.setString(2, name);
         statement.setString(3, (String) map.get(TYPE));
         statement.setString(4, (String) map.get(ABILITY));
-        statement.setString(5, (String) map.get(FLAVOR));
-        statement.setString(6, (String) map.get(MANA));
-        statement.setString(7, String.valueOf(map.get(COST)));
-        statement.setString(8, (String) map.get(LINK));
-        statement.setString(9, (String) map.get(IMAGE));
-        statement.setString(10, (String) map.get(POWER));
-        statement.setString(11, (String) map.get(TOUGHNESS));
-        statement.setString(12, (String) map.get(LOYALTY));
+        statement.setString(5, (String) map.get(MANA));
+        statement.setString(6, (String) map.get(POWER));
+        statement.setString(7, (String) map.get(TOUGHNESS));
+        statement.setString(8, (String) map.get(LOYALTY));
+        statement.setString(9, (String) map.get(LINK));
         statement.executeUpdate();
         statement.close();
-
-        lastInsertedValue = name;
-
-        Card card = (Card) entities;
-        format.insert(card.getFormat());
-        ruling.insert(card.getRuling());
-    }
-
-    /**
-     * @return the last inserted row.
-     */
-    protected synchronized static String getLastInsertedRowValue() {
-        return lastInsertedValue;
     }
 
     /**
@@ -183,19 +143,13 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
      */
     @Override
     public Card[] query(QueryMap map) throws SQLException {
-        String result = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, " +
-                "%s, %s, %s, %s, %s, %s, %s, %s", ID, NAME, TYPE, ABILITY, FLAVOR, MANA,
-                COST, LINK, IMAGE, POWER, TOUGHNESS, LOYALTY, STANDARD, EXTENDED, MODERN,
-                LEGACY, VINTAGE, CLASSIC, COMMANDER, DATE, RULING);
-        String query = String.format("SELECT %s FROM %s, %s, %s ", result, TABLE_NAME,
-                FormatWrapper.TABLE_NAME, RulingWrapper.TABLE_NAME);
-        String condition = String.format("WHERE %s.%s LIKE %s.%s AND %s.%s LIKE %s.%s",
-                TABLE_NAME, NAME, FormatWrapper.TABLE_NAME, R_NAME, TABLE_NAME, NAME,
-                RulingWrapper.TABLE_NAME, R_NAME);
+        String result = String.format("%s, %s, %s, %s, %s, %s, %s, %s, %s",
+                ID, NAME, TYPE, ABILITY, MANA, POWER, TOUGHNESS, LOYALTY, LINK);
+        String query = String.format("SELECT %s FROM %s ", result, TABLE_NAME);
+        String condition = "WHERE ";
 
         String end = "";
         for (String value : map.keySet()) {
-            end += " AND ";
             QueryNode node = map.get(value);
             String search = node.getValue();
 
@@ -226,53 +180,28 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
      */
     private Card[] makeList(ResultSet set) throws SQLException {
         ArrayList<Card> list = new ArrayList<Card>();
-        Card card = null;
+        Card card;
         while (set.next()) {
-            String name = set.getString(NAME);
-            String date = set.getString(DATE);
-            String ruling = set.getString(RULING);
-
-            if (card == null || !name.equals(card.getName())) { //New Card preparation
-                card = new Card();
-                card.setImage(set.getString(IMAGE));
-                card.setId(set.getInt(ID));
-                card.setName(set.getString(NAME));
-                card.setType(set.getString(TYPE));
-                card.setAbility(set.getString(ABILITY));
-                card.setFlavor(set.getString(FLAVOR));
-                card.setMana(set.getString(MANA));
-                String value = set.getString(COST);
-                card.setCost(Integer.parseInt(value));
-                card.setLink(set.getString(LINK));
-                String power = set.getString(POWER);
-                String loyalty = set.getString(LOYALTY);
-                if (power != null) {
-                    Creature creature = CardFactory.create(card, Creature.class);
-                    creature.setPower(power);
-                    creature.setToughness(set.getString(TOUGHNESS));
-                    card = creature;
-                } else if (loyalty != null || card.isPlaneswalker()) {
-                    Planeswalker walker = CardFactory.create(card, Planeswalker.class);
-                    walker.setLoyalty(loyalty == null ? "" : loyalty);
-                    card = walker;
-                }
-                DataMap format = card.getFormat();
-                format.put(STANDARD, set.getString(STANDARD));
-                format.put(EXTENDED, set.getString(EXTENDED));
-                format.put(MODERN, set.getString(MODERN));
-                format.put(LEGACY, set.getString(LEGACY));
-                format.put(VINTAGE, set.getString(VINTAGE));
-                format.put(CLASSIC, set.getString(CLASSIC));
-                format.put(COMMANDER, set.getString(COMMANDER));
-
-                DataMap rule = card.getRuling();
-                rule.put(date, ruling);
-
-                list.add(card);
-            } else if (name.equals(card.getName())) { //Same card but different ruling
-                DataMap dm = card.getRuling();
-                dm.put(date, ruling);
+            card = new Card();
+            card.setId(set.getInt(ID));
+            card.setName(set.getString(NAME));
+            card.setType(set.getString(TYPE));
+            card.setAbility(set.getString(ABILITY));
+            card.setMana(set.getString(MANA));
+            card.setLink(set.getString(LINK));
+            String power = set.getString(POWER);
+            String loyalty = set.getString(LOYALTY);
+            if (power != null) {
+                Creature creature = CardFactory.create(card, Creature.class);
+                creature.setPower(power);
+                creature.setToughness(set.getString(TOUGHNESS));
+                card = creature;
+            } else if (loyalty != null || card.isPlaneswalker()) {
+                Planeswalker walker = CardFactory.create(card, Planeswalker.class);
+                walker.setLoyalty(loyalty == null ? "" : loyalty);
+                card = walker;
             }
+            list.add(card);
         }
 
         int size = list.size();
@@ -310,13 +239,20 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
 
     public static void main(String[] args) throws SQLException {
         SQLProcedure procedure = new MagicWrapper(new SQLite());
-        QueryMap map = new QueryMap();
-        map.put(NAME, new QueryNode("Garruk", false));
-        map.put(COMMANDER, new QueryNode("LEGAL", true));
-        Card[] cards = (Card[]) procedure.query(map);
-        System.out.println(Arrays.toString(cards));
+        Card card = new Card();
+        card.setName("Temp");
+        card.setAbility("Temo");
+        card.setType("Null");
+        procedure.insert(card);
+        //procedure.delete("Fungal Reaches");
+        /*QueryMap map = new QueryMap();
+        map.put(NAME, new QueryNode("Fungal", false));
+        Card[] cards = procedure.query(map);
         for (Card card : cards)
-            System.out.println(card.getName());
+            System.out.println(card.getName());*/
+        /*UpdateMap map = new UpdateMap();
+        map.put(Constant.NAME, "Reaches");
+        procedure.update("Fungal Reaches", map);*/
         procedure.close();
     }
 }

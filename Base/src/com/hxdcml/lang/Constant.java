@@ -24,29 +24,9 @@ public interface Constant {
     public static final String NAME = "NAME";
     public static final String TYPE = "TYPE";
     public static final String ABILITY = "ABILITY";
-    public static final String FLAVOR = "FLAVOR";
     public static final String MANA = "MANA";
-    public static final String COST = "COST";
-    public static final String LINK = "LINK";
-    public static final String IMAGE = "IMAGE";
     public static final String POWER = "POWER";
     public static final String TOUGHNESS = "TOUGHNESS";
     public static final String LOYALTY = "LOYALTY";
-
-    /**
-     * Entities for Ruling Wrapper
-     */
-    public static final String DATE = "ANNOUNCED_DATE";
-    public static final String RULING = "RULE";
-
-    /**
-     * Entities for Format Wrapper
-     */
-    public static final String VINTAGE = "VINTAGE";
-    public static final String LEGACY = "LEGACY";
-    public static final String EXTENDED = "EXTENDED";
-    public static final String STANDARD = "STANDARD";
-    public static final String CLASSIC = "CLASSIC";
-    public static final String COMMANDER = "COMMANDER";
-    public static final String MODERN = "MODERN";
+    public static final String LINK = "LINK";
 }

@@ -34,15 +34,17 @@ public class Source {
         String source = "";
 
         try {
-            url = url.replaceAll(" ", "+").toLowerCase();
+            int lines = 1;
             URL link = new URL(url);
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(link.openStream(), "UTF-8"));
             String input;
             while ((input = reader.readLine()) != null) {
+                System.out.println(lines);
                 if (input.trim().equals(""))
                     continue;
                 source += (source.equals("") ? "" : "\n") + input;
+                lines++;
             }
             reader.close();
         } catch (MalformedURLException e) {
