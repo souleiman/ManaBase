@@ -50,18 +50,6 @@ public class MagicProtocol extends Protocol {
     }
 
     /**
-     * Forces an update in the Database, deletes the data from the database and requests an
-     * update.
-     *
-     * @param message contains what to delete and what to update.
-     * @return the updated result.
-     */
-    @Override
-    protected String requestForcedUpdate(ProtocolMessage message) throws SQLException {
-        return null;
-    }
-
-    /**
      * Requests an update on a specific detail based on the message given.
      *
      * @param message contains detail on what to search

@@ -13,7 +13,6 @@ public class ProtocolData {
     public static final int DELETE = 2;
     public static final int SIZE = 3;
     public static final int RANDOM = 4;
-    public static final int FORCE = 5;
 
     private int command;
     private ProtocolMessage message;
@@ -54,8 +53,5 @@ public class ProtocolData {
     }
     public boolean isSize() {
         return command == SIZE;
-    }
-    public boolean isForced() {
-        return command == FORCE;
     }
 }

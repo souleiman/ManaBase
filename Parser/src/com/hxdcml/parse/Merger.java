@@ -17,7 +17,7 @@ public class Merger implements Runnable {
     private String source;
 
     public static String merge() throws InterruptedException {
-        File[] files = new File("sets/").listFiles();
+        File[] files = new File("sets/]").listFiles();
         assert files != null;
         Arrays.sort(files);
         Merger[] mergers = new Merger[files.length];
