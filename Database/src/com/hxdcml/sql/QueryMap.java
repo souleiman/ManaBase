@@ -21,7 +21,7 @@ public class QueryMap {
         for (Object key : query.keySet()) {
             ArrayList values = (ArrayList) query.get(key);
             String value = (String) values.get(0);
-            int var = Integer.parseInt(values.get(1).toString());
+            int var = Integer.parseInt(values.get(1).toString().replaceAll("\\.0", ""));
             put((String) key, new QueryNode(value, var));
         }
     }

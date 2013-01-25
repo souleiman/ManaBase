@@ -162,7 +162,7 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
                     search = (String) SQLBinder.format(search);
                 else if (node.isContains())
                     search = SQLBinder.containsFormat(search);
-                else
+                else if (node.isExhaust())
                     search = SQLBinder.exhaustFormat(search);
                 end += search;
             }
