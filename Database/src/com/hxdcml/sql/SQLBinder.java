@@ -20,6 +20,11 @@ public final class SQLBinder {
         return value;
     }
 
+    public static String containsFormat(String value) {
+        String temp = "%" + value + "%";
+        return (String) format(temp);
+    }
+
     public static String exhaustFormat(String value) {
         String temp = "%";
         for (char c : value.toCharArray()) {

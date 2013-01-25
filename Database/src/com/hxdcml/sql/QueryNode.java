@@ -6,8 +6,12 @@ package com.hxdcml.sql;
  * Time: 3:28 PM
  */
 public class QueryNode {
+    public static final int EXACT = 0;
+    public static final int CONTAINS = 1;
+    public static final int EXHAUST = 2;
+
     private String value;
-    private boolean exact;
+    private int type;
 
     /**
      * These values inserted will function as search helpers, Where value is the value that
@@ -15,28 +19,35 @@ public class QueryNode {
      * exhaust.
      *
      * @param value comparison value to search by.
-     * @param exact true if to search by exact, otherwise false for exhaustive search.
+     * @param type  0 if to search by exact, or 1 for contain, otherwise 2 for exhaustive
+     *              search.
      */
-    public QueryNode(String value, boolean exact) {
+    public QueryNode(String value, int type) {
         this.value = value;
-        this.exact = exact;
+        this.type = type;
     }
 
     public String getValue() {
         return value;
     }
-    public boolean isExact(){
-        return exact;
+
+    public boolean isExact() {
+        return type == EXACT;
     }
-    public boolean isExhaust(){
-        return !exact;
+
+    public boolean isContains() {
+        return type == CONTAINS;
+    }
+
+    public boolean isExhaust() {
+        return type == EXHAUST;
     }
 
     @Override
     public String toString() {
         return "QueryNode{" +
                 "value='" + value + '\'' +
-                ", exact=" + exact +
+                ", type=" + type +
                 '}';
     }
 }

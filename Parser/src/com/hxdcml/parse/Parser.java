@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  * Time: 8:57 AM
  */
 public class Parser {
-    private void start() throws SQLException, InterruptedException {
+    private void start() throws InterruptedException, SQLException {
         String source = prepareSource();
         System.out.println(source);
         String[] split = condense(source);
@@ -26,8 +26,13 @@ public class Parser {
 
         System.out.println("Inserting cards into database...");
         SQLProcedure procedure = new MagicWrapper(new SQLite());
-        for (Card card : cards)
-            procedure.insert(card);
+        for (Card card : cards) {
+            try {
+                procedure.insert(card);
+            } catch (SQLException e) {
+                System.out.println("Copy found... Not adding... " + card.getName());
+            }
+        }
         procedure.close();
     }
 
@@ -99,7 +104,6 @@ public class Parser {
         return temp.trim();
     }
 
-
     private String prepareSource() throws InterruptedException {
         System.out.println("Preparing the source for easy read-access");
         System.out.println("Reading original source(s)...");
@@ -131,6 +135,7 @@ public class Parser {
             bool |= line.startsWith(var);
         return bool;
     }
+
     public static void main(String[] args) throws SQLException, InterruptedException {
         Parser parser = new Parser();
         parser.start();

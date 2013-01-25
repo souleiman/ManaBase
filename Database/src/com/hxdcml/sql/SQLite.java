@@ -54,7 +54,6 @@ public class SQLite {
      */
     public ResultSet executeQuery(String sql) throws SQLException {
         return statement.executeQuery(sql);
-
     }
 
     /**

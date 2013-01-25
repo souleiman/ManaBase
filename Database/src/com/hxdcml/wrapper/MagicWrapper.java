@@ -159,11 +159,12 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
             } else {
                 end += " LIKE ";
                 if (node.isExact())
-                    end += SQLBinder.format(search);
-                else {
+                    search = (String) SQLBinder.format(search);
+                else if (node.isContains())
+                    search = SQLBinder.containsFormat(search);
+                else
                     search = SQLBinder.exhaustFormat(search);
-                    end += search;
-                }
+                end += search;
             }
         }
         String sql = query + condition + end;
@@ -239,20 +240,15 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
 
     public static void main(String[] args) throws SQLException {
         SQLProcedure procedure = new MagicWrapper(new SQLite());
-        Card card = new Card();
-        card.setName("Temp");
-        card.setAbility("Temo");
-        card.setType("Null");
-        procedure.insert(card);
         //procedure.delete("Fungal Reaches");
         /*QueryMap map = new QueryMap();
-        map.put(NAME, new QueryNode("Fungal", false));
+        map.put(NAME, new QueryNode("Sleep", QueryNode.EXACT));
         Card[] cards = procedure.query(map);
         for (Card card : cards)
-            System.out.println(card.getName());*/
+            System.out.println(card.getAbility());*/
         /*UpdateMap map = new UpdateMap();
-        map.put(Constant.NAME, "Reaches");
-        procedure.update("Fungal Reaches", map);*/
+        map.put(Constant.NAME, "Alpha Myr");
+        procedure.update("Bald Myr", map);*/
         procedure.close();
     }
 }
