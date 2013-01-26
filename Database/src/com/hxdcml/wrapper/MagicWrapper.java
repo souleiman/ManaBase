@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static com.hxdcml.lang.Constant.ABILITY;
+import static com.hxdcml.lang.Constant.ASCII;
 import static com.hxdcml.lang.Constant.ID;
 import static com.hxdcml.lang.Constant.LINK;
 import static com.hxdcml.lang.Constant.LOYALTY;
@@ -52,6 +53,7 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
         PreparedStatement statement = lite.getConnection().prepareStatement(
                 "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                         ID + " INTEGER," + //Multiverse ID
+                        ASCII + " STRING COLLATE NOCASE," +
                         NAME + " STRING NOT NULL UNIQUE COLLATE NOCASE," + // NAME
                         TYPE + " STRING NOT NULL COLLATE NOCASE," + // Card Type
                         ABILITY + " STRING COLLATE NOCASE," + //Ability
@@ -153,6 +155,7 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
             QueryNode node = map.get(value);
             String search = node.getValue();
 
+            value = value.equals(NAME) ? ASCII : value; //Search by Ascii instead of name.
             end += value;
             if (value.equals(ID)) {
                 end += " = " + search;
@@ -236,19 +239,5 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
     @Override
     public void close() {
         lite.close();
-    }
-
-    public static void main(String[] args) throws SQLException {
-        SQLProcedure procedure = new MagicWrapper(new SQLite());
-        //procedure.delete("Fungal Reaches");
-        /*QueryMap map = new QueryMap();
-        map.put(NAME, new QueryNode("Sleep", QueryNode.EXACT));
-        Card[] cards = procedure.query(map);
-        for (Card card : cards)
-            System.out.println(card.getAbility());*/
-        /*UpdateMap map = new UpdateMap();
-        map.put(Constant.NAME, "Alpha Myr");
-        procedure.update("Bald Myr", map);*/
-        procedure.close();
     }
 }

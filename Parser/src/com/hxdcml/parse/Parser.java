@@ -135,9 +135,4 @@ public class Parser {
             bool |= line.startsWith(var);
         return bool;
     }
-
-    public static void main(String[] args) throws SQLException, InterruptedException {
-        Parser parser = new Parser();
-        parser.start();
-    }
 }

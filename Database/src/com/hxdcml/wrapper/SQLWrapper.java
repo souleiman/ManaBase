@@ -1,7 +1,6 @@
 package com.hxdcml.wrapper;
 
 import com.hxdcml.card.Card;
-import com.hxdcml.card.Planeswalker;
 import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.QueryNode;
@@ -40,4 +39,18 @@ public abstract class SQLWrapper {
      *                 the database.
      */
     protected abstract void insert(SQLEntities entities) throws SQLException;
+
+    public static void main(String[] args) throws SQLException {
+        SQLProcedure procedure = new MagicWrapper(new SQLite());
+        QueryMap map = new QueryMap();
+        map.put(Constant.NAME, new QueryNode("û", QueryNode.CONTAINS));
+        Card[] cards = procedure.query(map);
+        for (Card card : cards) {
+            String name = card.getName().replaceAll("û", "u");
+            UpdateMap umap = new UpdateMap();
+            umap.put(Constant.ASCII, name);
+            procedure.update(card.getName(), umap);
+        }
+        procedure.close();
+    }
 }

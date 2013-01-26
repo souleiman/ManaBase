@@ -13,11 +13,6 @@ public interface Constant {
     public static final String DATABASE_FILE_MAGIC = "manabase.db";
 
     /**
-     * Column Entities for all SQLWrapper
-     */
-    public static final String R_NAME = "R_NAME";
-
-    /**
      * Entities for MagicWrapper
      */
     public static final String ID = "ID"; //Multiverse ID
@@ -29,4 +24,5 @@ public interface Constant {
     public static final String TOUGHNESS = "TOUGHNESS";
     public static final String LOYALTY = "LOYALTY";
     public static final String LINK = "LINK";
+    public static final String ASCII = "ASCII";
 }

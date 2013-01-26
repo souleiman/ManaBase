@@ -76,8 +76,4 @@ public class Merger implements Runnable {
     public String getString() {
         return source.trim();
     }
-
-    public static void main(String[] args) throws InterruptedException {
-        System.out.println(Merger.merge());
-    }
 }

@@ -31,7 +31,7 @@ public interface SQLProcedure {
     public boolean delete(String name) throws SQLException;
 
     /**
-     * Updates the SQL operation where it is equal to the name/r_key and replaced based on
+     * Updates the SQL operation where it is equal to the name and replaced based on
      * the SQLMap values.
      *
      * @param name the row that will be modified that is associated with this value.
