@@ -4,6 +4,7 @@ import com.hxdcml.card.Card;
 import com.hxdcml.card.CardFactory;
 import com.hxdcml.card.Creature;
 import com.hxdcml.card.Planeswalker;
+import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.QueryNode;
 import com.hxdcml.sql.SQLBinder;
@@ -159,6 +160,10 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
             end += value;
             if (value.equals(ID)) {
                 end += " = " + search;
+            } else if (value.equals(ASCII) && node.isAll()) { // Search by all possibility
+                end += " LIKE " + SQLBinder.format(search) + " OR ";
+                end += value + " LIKE " + SQLBinder.containsFormat(search) + " OR ";
+                end += value + " LIKE " + SQLBinder.exhaustFormat(search);
             } else {
                 end += " LIKE ";
                 if (node.isExact())
@@ -170,7 +175,8 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
                 end += search;
             }
         }
-        String sql = query + condition + end;
+        String sql = query + condition + end + " LIMIT 10";
+        System.out.println(sql);
         ResultSet set = lite.executeQuery(sql);
         return makeList(set);
     }

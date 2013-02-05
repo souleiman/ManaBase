@@ -9,6 +9,7 @@ public class QueryNode {
     public static final int EXACT = 0;
     public static final int CONTAINS = 1;
     public static final int EXHAUST = 2;
+    public static final int ALL = 3;
 
     private String value;
     private int type;
@@ -20,7 +21,7 @@ public class QueryNode {
      *
      * @param value comparison value to search by.
      * @param type  0 if to search by exact, or 1 for contain, otherwise 2 for exhaustive
-     *              search.
+     *              search or 3 for ALL of them.
      */
     public QueryNode(String value, int type) {
         this.value = value;
@@ -41,6 +42,10 @@ public class QueryNode {
 
     public boolean isExhaust() {
         return type == EXHAUST;
+    }
+
+    public boolean isAll() {
+        return type == ALL;
     }
 
     @Override
