@@ -176,7 +176,6 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
             }
         }
         String sql = query + condition + end + " LIMIT 10";
-        System.out.println(sql);
         ResultSet set = lite.executeQuery(sql);
         return makeList(set);
     }
