@@ -20,11 +20,21 @@ public final class SQLBinder {
         return value;
     }
 
+    /**
+     * Adds the '%' at the front and end. This should allow containment, if needed.
+     * @param value the given value to contain and sanitize.
+     * @return a String Sanitized Object ready to be used for SQL Operation.
+     */
     public static String containsFormat(String value) {
         String temp = "%" + value + "%";
         return (String) format(temp);
     }
 
+    /**
+     * Exhausts the value to allow each following character contain the '%'.
+     * @param value the given value to contain and exhaustively sanitize.
+     * @return a String Sanitized Object ready to be used for SQL operation.
+     */
     public static String exhaustFormat(String value) {
         String temp = "%";
         for (char c : value.toCharArray()) {
