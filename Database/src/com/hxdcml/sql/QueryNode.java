@@ -9,7 +9,6 @@ public class QueryNode {
     public static final int EXACT = 0;
     public static final int CONTAINS = 1;
     public static final int EXHAUST = 2;
-    public static final int ALL = 3;
 
     private String value;
     private int type;
@@ -28,26 +27,37 @@ public class QueryNode {
         this.type = type;
     }
 
+    /**
+     * @return the String that is representing this Node.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * @return true, if and only if type is equal to EXACT, otherwise false.
+     */
     public boolean isExact() {
         return type == EXACT;
     }
 
+    /**
+     * @return true, if and only if type is equal to CONTAINS, otherwise false.
+     */
     public boolean isContains() {
         return type == CONTAINS;
     }
 
+    /**
+     * @return true, if and only if type is equal to EXHAUST, otherwise false.
+     */
     public boolean isExhaust() {
         return type == EXHAUST;
     }
 
-    public boolean isAll() {
-        return type == ALL;
-    }
-
+    /**
+     * @return a String Representation of the current Object.
+     */
     @Override
     public String toString() {
         return "QueryNode{" +
