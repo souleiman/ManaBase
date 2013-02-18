@@ -39,18 +39,37 @@ public class ProtocolData {
         return message;
     }
 
+    /**
+     * @return true, iff the command is equal to SEARCH, otherwise false.
+     */
     public boolean isSearch() {
         return command == SEARCH;
     }
+
+    /**
+     * @return true, iff the command is equal to RANDOM, otherwise false.
+     */
     public boolean isRandom() {
         return command == RANDOM;
     }
+
+    /**
+     * @return true, iff the command is equal to UPDATE, otherwise false.
+     */
     public boolean isUpdate() {
         return command == UPDATE;
     }
+
+    /**
+     * @return true, iff the command is equal to DELETE, otherwise false.
+     */
     public boolean isDelete() {
         return command == DELETE;
     }
+
+    /**
+     * @return true, iff the command is equal to SIZE, otherwise false.
+     */
     public boolean isSize() {
         return command == SIZE;
     }
