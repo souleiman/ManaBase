@@ -56,7 +56,7 @@ public class QueryMap {
     }
 
     /**
-     * A simple getter method,t hat will access a data in the map.
+     * A simple getter method that will access a data in the map.
      *
      * @param key the String key that we want to access in the Map.
      * @return the QueryNode that represents the key value.
