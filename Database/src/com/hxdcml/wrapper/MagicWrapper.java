@@ -4,7 +4,6 @@ import com.hxdcml.card.Card;
 import com.hxdcml.card.CardFactory;
 import com.hxdcml.card.Creature;
 import com.hxdcml.card.Planeswalker;
-import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.QueryNode;
 import com.hxdcml.sql.SQLBinder;
@@ -156,14 +155,11 @@ public class MagicWrapper extends SQLWrapper implements SQLProcedure {
             QueryNode node = map.get(value);
             String search = node.getValue();
 
-            value = value.equals(NAME) ? ASCII : value; //Search by Ascii instead of name.
+            //Search by Ascii instead of name. Due to NAME containing unicode characters.
+            value = value.equals(NAME) ? ASCII : value;
             end += value;
             if (value.equals(ID)) {
                 end += " = " + search;
-            } else if (value.equals(ASCII) && node.isAll()) { // Search by all possibility
-                end += " LIKE " + SQLBinder.format(search) + " OR ";
-                end += value + " LIKE " + SQLBinder.containsFormat(search) + " OR ";
-                end += value + " LIKE " + SQLBinder.exhaustFormat(search);
             } else {
                 end += " LIKE ";
                 if (node.isExact())
