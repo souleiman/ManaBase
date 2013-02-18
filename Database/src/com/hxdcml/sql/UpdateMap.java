@@ -11,10 +11,18 @@ import java.util.Set;
 public class UpdateMap {
     private SQLMap map;
 
+    /**
+     * Instantiates the SQLMap
+     */
     public UpdateMap() {
         map = new SQLMap();
     }
 
+    /**
+     * Inserts all the data inside of the AbstractMap into our Map.
+     *
+     * @param update the given information that we want to add into our Map.
+     */
     public UpdateMap(AbstractMap<String, String> update) {
         this();
         map.putAll(update);
@@ -31,10 +39,21 @@ public class UpdateMap {
         map.put(key, value);
     }
 
+    /**
+     * Returns the Set of Key Values.
+     *
+     * @return a Set that contains Strings of Key Values.
+     */
     public Set<String> keySet() {
         return map.keySet();
     }
 
+    /**
+     * A simple getter method that will access a data in the map.
+     *
+     * @param key the String key that we want to access in the Map.
+     * @return the String that represents the key value.
+     */
     public String get(String key) {
         return (String) map.get(key);
     }
