@@ -18,6 +18,14 @@ import java.util.regex.Pattern;
  * Time: 8:57 AM
  */
 public class Parser {
+    /**
+     * This will begin the process of reading a set which can be found at
+     * gatherer.wizard.com, this will help us read in a large amount of cards and insert
+     * them into the database.
+     *
+     * @throws InterruptedException thrown when something interrupts the Merger.
+     * @throws SQLException         In case the database, is in use.
+     */
     private void start() throws InterruptedException, SQLException {
         String source = prepareSource();
         System.out.println(source);
@@ -36,6 +44,12 @@ public class Parser {
         procedure.close();
     }
 
+    /**
+     * Converts the list of cards based on the split result.
+     *
+     * @param split contains content of the card that will be parsed out and generated.
+     * @return an Array of Card.
+     */
     private Card[] convertToCard(String[] split) {
         System.out.println("Preparing cards...");
         Card[] cards = new Card[split.length];
@@ -44,6 +58,13 @@ public class Parser {
         return cards;
     }
 
+    /**
+     * Converts a line of String into a Card. Based on the given information within the
+     * String, it will represent the Card object.
+     *
+     * @param data the String that contains data of the Card.
+     * @return a Card object that was represented by the String.
+     */
     private Card createCard(String data) {
         HashMap<String, String> map = new HashMap<>();
         String[] split = data.split("\n");
@@ -78,6 +99,14 @@ public class Parser {
         return card;
     }
 
+    /**
+     * Begins by separating each table row and new line. This will help us visualize each
+     * data needed. This will be compressed, which will give us a result that contains
+     * information of a card.
+     *
+     * @param source the Source the contains HTML data.
+     * @return an Array of String, that each represent a Card Object.
+     */
     private String[] condense(String source) {
         System.out.println("Condensing and Compressing Strings...");
         String[] split = source.split("</tr>\n</tr>");
@@ -86,6 +115,12 @@ public class Parser {
         return split;
     }
 
+    /**
+     * Converts each line from HTML to an easier format that will later help us easily format.
+     *
+     * @param card the String that represents the card in HTML format.
+     * @return a String that is easier to read then the HTML format.
+     */
     private String compress(String card) {
         String[] split = card.split("</tr>");
         String temp = "";
@@ -104,6 +139,13 @@ public class Parser {
         return temp.trim();
     }
 
+    /**
+     * Prepares the source to be parsed by merging the data we need.
+     *
+     * @return the String source which contains the HTML.
+     * @throws InterruptedException Is to be thrown if something get interrupted in the
+     *                              Merger.
+     */
     private String prepareSource() throws InterruptedException {
         System.out.println("Preparing the source for easy read-access");
         System.out.println("Reading original source(s)...");
@@ -124,6 +166,14 @@ public class Parser {
         return newSource.trim();
     }
 
+    /**
+     * Based on the given line, if any of the unecessary String falls in the given line.
+     * return true.
+     *
+     * @param line the String we want to check against.
+     * @return true, if the line contains any of the Strings that's not needed, otherwise,
+     *         false.
+     */
     private boolean lineNotNeeded(String line) {
         line = line.trim();
         String[] dontNeed = {
