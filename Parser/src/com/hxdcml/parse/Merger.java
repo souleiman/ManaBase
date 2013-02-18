@@ -16,6 +16,24 @@ public class Merger implements Runnable {
     private File file;
     private String source;
 
+    /**
+     * Determine the folder location of where the data exist.
+     *
+     * @param file The folder that contains the HTML file(s).
+     */
+    public Merger(File file) {
+        this.file = file;
+    }
+
+    /**
+     * This method will take multiple files and reads each one of the in a different Thread.
+     * This feature will allow us to read more than one file at a time. Further speeding up
+     * the read of LARGE files, and merging the Strings together.
+     *
+     * @return a String of the content that lies within the file.
+     *
+     * @throws InterruptedException throw an Exception if something interrupts such event.
+     */
     public static String merge() throws InterruptedException {
         File[] files = new File("sets/]").listFiles();
         assert files != null;
@@ -69,10 +87,10 @@ public class Merger implements Runnable {
         System.out.println("Finished " + file.getName());
     }
 
-    public Merger(File file) {
-        this.file = file;
-    }
-
+    /**
+     * Return the source, trimmed.
+     * @return a String that is trimmed off whitespaces.
+     */
     public String getString() {
         return source.trim();
     }
