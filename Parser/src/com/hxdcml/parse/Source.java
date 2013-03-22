@@ -25,7 +25,7 @@ public class Source {
     }
 
     /**
-     * Collects the the source of the webpage and prepares to return it.
+     * Collects the the source of the web-page and prepares to return it.
      *
      * @param url The page to retrieve the source
      * @return the source code

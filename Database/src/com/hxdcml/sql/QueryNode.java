@@ -1,5 +1,7 @@
 package com.hxdcml.sql;
 
+import java.util.Arrays;
+
 /**
  * User: Souleiman Ayoub
  * Date: 12/30/12
@@ -64,5 +66,10 @@ public class QueryNode {
                 "value='" + value + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        boolean[] a = new boolean[10];
+        System.out.println(Arrays.toString(a));
     }
 }
