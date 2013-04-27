@@ -35,7 +35,7 @@ public class Merger implements Runnable {
      * @throws InterruptedException throw an Exception if something interrupts such event.
      */
     public static String merge() throws InterruptedException {
-        File[] files = new File("sets/]").listFiles();
+        File[] files = new File("sets/").listFiles();
         assert files != null;
         Arrays.sort(files);
         Merger[] mergers = new Merger[files.length];

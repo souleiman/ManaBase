@@ -3,6 +3,7 @@ package com.hxdcml.parse;
 import com.hxdcml.card.Card;
 import com.hxdcml.card.Creature;
 import com.hxdcml.card.Planeswalker;
+import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.SQLite;
 import com.hxdcml.wrapper.MagicWrapper;
 import com.hxdcml.wrapper.SQLProcedure;
@@ -28,12 +29,11 @@ public class Parser {
      */
     private void start() throws InterruptedException, SQLException {
         String source = prepareSource();
-        System.out.println(source);
         String[] split = condense(source);
         Card[] cards = convertToCard(split);
 
         System.out.println("Inserting cards into database...");
-        SQLProcedure procedure = new MagicWrapper(new SQLite());
+        SQLProcedure procedure = new MagicWrapper(new SQLite(Constant.DATABASE_FILE_MAGIC));
         for (Card card : cards) {
             try {
                 procedure.insert(card);
@@ -184,5 +184,10 @@ public class Parser {
         for (String var : dontNeed)
             bool |= line.startsWith(var);
         return bool;
+    }
+
+    public static void main(String[] args) throws SQLException, InterruptedException {
+        Parser p = new Parser();
+        p.start();
     }
 }

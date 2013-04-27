@@ -2,6 +2,7 @@ package com.hxdcml.protocol;
 
 import com.google.gson.GsonBuilder;
 import com.hxdcml.card.Card;
+import com.hxdcml.lang.Constant;
 import com.hxdcml.sql.QueryMap;
 import com.hxdcml.sql.SQLite;
 import com.hxdcml.sql.UpdateMap;
@@ -18,7 +19,7 @@ import java.util.AbstractMap;
 public class MagicProtocol extends Protocol {
 
     protected MagicProtocol() throws SQLException {
-        procedure = new MagicWrapper(new SQLite());
+        procedure = new MagicWrapper(new SQLite(Constant.DATABASE_FILE_MAGIC));
         gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 

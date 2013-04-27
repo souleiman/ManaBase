@@ -1,9 +1,11 @@
 package com.hxdcml.sql;
 
 
-import com.hxdcml.lang.Constant;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * User: Souleiman Ayoub
@@ -17,10 +19,9 @@ public class SQLite {
     /**
      * Instantiates connection and statement to be used
      */
-    public SQLite() {
+    public SQLite(String filename) {
         try {
             Class.forName("org.sqlite.JDBC");
-            String filename = Constant.DATABASE_FILE_MAGIC;
             connection = DriverManager.getConnection("jdbc:sqlite:" + filename);
             statement = connection.createStatement();
             statement.setQueryTimeout(30);
