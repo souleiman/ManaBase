@@ -3,6 +3,10 @@ package com.hxdcml.parse;
 import com.hxdcml.card.Card;
 import com.hxdcml.card.Creature;
 import com.hxdcml.card.Planeswalker;
+import com.hxdcml.lang.Constant;
+import com.hxdcml.sql.SQLite;
+import com.hxdcml.wrapper.MagicWrapper;
+import com.hxdcml.wrapper.SQLProcedure;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -28,7 +32,7 @@ public class Parser {
         String[] split = condense(source);
         Card[] cards = convertToCard(split);
 
-/*        System.out.println("Inserting cards into database...");
+        System.out.println("Inserting cards into database...");
         SQLProcedure procedure = new MagicWrapper(new SQLite(Constant.DATABASE_FILE_MAGIC));
         for (Card card : cards) {
             try {
@@ -37,7 +41,7 @@ public class Parser {
                 System.out.println("Copy found... Not adding... " + card.getName());
             }
         }
-        procedure.close();*/
+        procedure.close();
     }
 
     /**
