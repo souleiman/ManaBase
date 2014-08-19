@@ -1,5 +1,6 @@
 __author__ = 'Souleiman'
 
+import sys
 import urllib.request
 import json
 import sqlite3
@@ -69,6 +70,8 @@ def process(url):
     db_conn = sqlite3.connect('../manabase.db')
     db_cur = db_conn.cursor()
 
+    added = 0
+    skipped = 0
     for i in cards:
         db_card = setup_card(i)
         try:
@@ -78,10 +81,18 @@ def process(url):
                 'LINK) VALUES (:id, :ascii, :name, :type, :ability, :mana, :power, '
                 ':toughness, :loyalty, :link)',
                 db_card)
+            added += 1
         except sqlite3.IntegrityError:
             print("{name} is a duplicate... skipping.".format(name=db_card['name']))
+            skipped += 1
 
     db_conn.commit()
     db_conn.close()
 
-process('http://mtgjson.com/json/M15.json')
+    print("\nSuccessfully added: {0} / {1}".format(str(added), str(added + skipped)))
+    print("Successfully skipped: {0} / {1}".format(str(skipped), str(added + skipped)))
+
+if len(sys.argv) != 2:
+    print("Excepted a parameter! Please specify the url for parsing.")
+
+process(str(sys.argv[1]))
