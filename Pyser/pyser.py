@@ -9,15 +9,11 @@ import re
 
 def setup_card(card):
     c_type = ' '.join([str(x) for x in card['types']])
-    if 'manaCost' in card:
-        card['manaCost'] = re.sub('[\{\}]', '', card['manaCost'])
-    if 'text' in card:
-        card['text'] = re.sub('[\{\}]', '', card['text'])
-        card['text'] = re.sub('[\n]', ' \u2014 ', card['text'])
 
-    if 'flavor' in card:
-        card['flavor'] = re.sub('[\{\}]', '', card['flavor'])
-        card['flavor'] = re.sub('[\n]', ' \u2014 ', card['flavor'])
+    for opt in ['manaCost', 'text', 'flavor']:
+        if opt in card:
+            card[opt] = re.sub('[\{\}]', '', card[opt])
+            card[opt] = re.sub('[\n]', ' ', card[opt])
 
     db_card = dict()
     db_card['id'] = card['multiverseid']
