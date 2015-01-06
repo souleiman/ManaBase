@@ -30,7 +30,7 @@ def setup_card(card):
             .format(main_type=c_type,
                     archetype=" ".join([str(arc) for arc in card['subtypes']]))
         db_card['ability'] = card['text'] if 'text' in card else card['flavor']
-    elif 'Sorcery' in c_type or 'Instant' in c_type or 'Enchantment' == c_type:
+    elif 'Sorcery' in c_type or 'Instant' in c_type or 'Enchantment' == c_type or 'Conspiracy' in c_type:
         db_card['type'] = '{main_type}{0}'.format(
             " \u2014 {0}".format(' '.join(card['subtypes'])) if 'subtypes' in card else '',
             main_type=c_type)
@@ -50,6 +50,7 @@ def setup_card(card):
             main_type=c_type)
         db_card['ability'] = card['text']
     else:
+        print(card)
         raise Exception("Unknown type: {0}".format(c_type))
     return db_card
 
